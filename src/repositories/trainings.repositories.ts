@@ -1,5 +1,4 @@
 import connection from "../database/db.js";
-import { TrainingType, TrainingStarted, TrainingFinished } from "../protocols/types.protocols.js";
 
 function insertTrainingTypeInDB (trained_muscle_groups, exercises) {
     return connection.query(`
@@ -30,18 +29,16 @@ function updateTrainingInDB (end_timestamp, did_all_the_exercises, id) {
     `, [end_timestamp, did_all_the_exercises, id]);
 }
 
-function getTrainingInDB () {
-    const response = connection.query(`
-        SELECT * FROM
-            trainings;
+async function getTrainingInDB () {
+    const response = await connection.query(`
+        SELECT * FROM trainings;
     `);
 
-    // if (response.rows !== undefined) {
-    //     return response.rows;
-    // }
-    return response;
+    if (response.rows !== undefined) {
+        return response.rows;
+    }
 
-    // return "There are no completed trainings";
+    return "There are no completed trainings";
 }
 
 export {
