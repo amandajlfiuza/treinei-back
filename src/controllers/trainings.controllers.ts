@@ -7,7 +7,7 @@ async function insertTrainingTypes(req: Request, res: Response) {
 
     try {
         const response = await insertTrainingTypeInDB(trained_muscle_groups, exercises);
-        return res.status(201).send(response);
+        return res.status(201).send(response.rows[0]);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -44,20 +44,23 @@ async function getTrainingCount(req: Request, res: Response) {
 
 
 
-    //try {
+    try {
         const response = await getTrainingInDB();
-        return res.send(response);
 
-        // if (response === "There are no completed trainings") {
-        //     return res.status(200).send(response);
-        // }
+        if (response === "There are no completed trainings") {
+            return res.status(200).send(response);
+        }
 
-        // const filterTraining = response.filter(training => (training.end_timestamp >= start_date && training.end_timestamp <= end_date));
-        // return res.status(200).send(`${filterTraining.length} trainings were completed in this period`);
+        const filterTraining = response.filter(training => (training.end_timestamp >= start_date && training.end_timestamp <= end_date));
+        return res.status(200).send(
+            filterTraining.length === 0 || filterTraining.length === 1 
+            ? `${filterTraining.length} training was completed in this period` 
+            : `${filterTraining.length} trainings were completed in this period`
+        );
 
-    // } catch (error) {
-    //     return res.status(500).send(error);
-    // }
+    } catch (error) {
+        return res.status(500).send(error);
+    }
 }
 
 export {

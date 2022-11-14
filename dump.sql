@@ -152,11 +152,11 @@ ALTER SEQUENCE public.training_types_id_seq OWNED BY public.training_types.id;
 
 CREATE TABLE public.trainings (
     id integer NOT NULL,
-    start_timestamp timestamp without time zone NOT NULL,
-    end_timestamp timestamp without time zone DEFAULT now(),
     type_id integer NOT NULL,
     did_all_the_exercises boolean,
-    gym_name character varying(50) NOT NULL
+    gym_name character varying(50) NOT NULL,
+    start_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+    end_timestamp timestamp without time zone
 );
 
 
@@ -327,14 +327,14 @@ SELECT pg_catalog.setval('public.states_id_seq', 27, true);
 -- Name: training_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.training_types_id_seq', 1, false);
+SELECT pg_catalog.setval('public.training_types_id_seq', 3, true);
 
 
 --
 -- Name: trainings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.trainings_id_seq', 1, false);
+SELECT pg_catalog.setval('public.trainings_id_seq', 2, true);
 
 
 --
