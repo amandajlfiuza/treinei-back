@@ -9,4 +9,5 @@ server.get("/status", (req, res) => {
     res.send("ok");
 });
 
-server.listen(4000, () => console.log("Listening on port 4000"));
+const PORT: number = 4005;
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));

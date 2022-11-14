@@ -153,9 +153,9 @@ ALTER SEQUENCE public.training_types_id_seq OWNED BY public.training_types.id;
 CREATE TABLE public.trainings (
     id integer NOT NULL,
     start_timestamp timestamp without time zone NOT NULL,
-    end_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+    end_timestamp timestamp without time zone DEFAULT now(),
     type_id integer NOT NULL,
-    did_all_the_exercises boolean NOT NULL,
+    did_all_the_exercises boolean,
     gym_name character varying(50) NOT NULL
 );
 

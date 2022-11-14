@@ -3,15 +3,17 @@ type TrainingType = {
     exercises: string[]
 };
 
-type Training = {
-    start_timestamp: string | Date,
-    end_timestamp: string | Date,
+type TrainingStarted = {
     gym_name: string,
-    type_id: number,
+    type_id: number
+};
+
+type TrainingFinished = {
     did_all_the_exercises: boolean
 };
 
 export {
     TrainingType,
-    Training
+    TrainingStarted,
+    TrainingFinished
 };
