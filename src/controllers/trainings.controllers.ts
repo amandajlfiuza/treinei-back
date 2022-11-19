@@ -30,8 +30,8 @@ async function finishTraining(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-        await updateTrainingInDB(end_timestamp, did_all_the_exercises, id);
-        return res.sendStatus(200);
+        const response = await updateTrainingInDB(end_timestamp, did_all_the_exercises, Number(id));
+        return res.status(200).send(response);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -41,8 +41,6 @@ async function getTrainingCount(req: Request, res: Response) {
     const { start, end } = req.params;
     const start_date = new Date(start);
     const end_date = new Date(end);
-
-
 
     try {
         const response = await getTrainingInDB();

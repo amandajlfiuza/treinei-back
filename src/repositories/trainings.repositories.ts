@@ -18,7 +18,7 @@ function insertTrainingStartedInDB (gym_name: string, type_id: number) {
     });
 }
 
-function updateTrainingInDB (end_timestamp, did_all_the_exercises, id) {
+function updateTrainingInDB (end_timestamp: Date, did_all_the_exercises: boolean, id: number) {
     return prisma.trainings.update({
         where: {
             id: id,
