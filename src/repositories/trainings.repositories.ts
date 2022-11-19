@@ -1,41 +1,40 @@
-import connection from "../database/db.js";
+import prisma from "../database/db.js";
 
-function insertTrainingTypeInDB (trained_muscle_groups, exercises) {
-    return connection.query(`
-        INSERT INTO
-            training_types (trained_muscle_groups, exercises)
-        VALUES
-            ($1, $2) RETURNING id;
-    `, [trained_muscle_groups, exercises]);
+function insertTrainingTypeInDB (trained_muscle_groups: string[], exercises: string[]) {
+    return prisma.training_types.create({
+        data: {
+            trained_muscle_groups: trained_muscle_groups,
+            exercises: exercises
+        },
+    });
 }
 
-function insertTrainingStartedInDB (gym_name, type_id) {
-    return connection.query(`
-        INSERT INTO
-            trainings (gym_name, type_id)
-        VALUES
-            ($1, $2) RETURNING id;
-    `, [gym_name, type_id]);
+function insertTrainingStartedInDB (gym_name: string, type_id: number) {
+    return prisma.trainings.create({
+        data: {
+            gym_name: gym_name,
+            type_id: type_id
+        },
+    });
 }
 
-function updateTrainingInDB (end_timestamp, did_all_the_exercises, id) {
-    return connection.query(`
-        UPDATE
-            trainings
-        SET
-            end_timestamp = $1, did_all_the_exercises = $2
-        WHERE
-            id = $3;
-    `, [end_timestamp, did_all_the_exercises, id]);
+function updateTrainingInDB (end_timestamp: Date, did_all_the_exercises: boolean, id: number) {
+    return prisma.trainings.update({
+        where: {
+            id: id,
+        },
+        data: {
+            end_timestamp: end_timestamp,
+            did_all_the_exercises: did_all_the_exercises
+        },
+    });
 }
 
 async function getTrainingInDB () {
-    const response = await connection.query(`
-        SELECT * FROM trainings;
-    `);
+    const response = await prisma.trainings.findMany();
 
-    if (response.rows !== undefined) {
-        return response.rows;
+    if (response.length !== 0) {
+        return response;
     }
 
     return "There are no completed trainings";
