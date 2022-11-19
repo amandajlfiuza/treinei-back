@@ -7,7 +7,7 @@ async function insertTrainingTypes(req: Request, res: Response) {
 
     try {
         const response = await insertTrainingTypeInDB(trained_muscle_groups, exercises);
-        return res.status(201).send(response.rows[0]);
+        return res.status(201).send(response);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -18,7 +18,7 @@ async function insertTrainingStarted(req: Request, res: Response) {
 
     try {
         const response = await insertTrainingStartedInDB(gym_name, type_id);
-        return res.status(201).send(response.rows[0]);
+        return res.status(201).send(response);
     } catch (error) {
         return res.status(500).send(error);
     }

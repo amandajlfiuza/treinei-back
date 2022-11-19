@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cities {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(250)
+  state_uf String @db.VarChar(2)
+  states   states @relation(fields: [state_uf], references: [uf], onDelete: NoAction, onUpdate: NoAction)
+  gyms     gyms[]
+}
+
+model gyms {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(50)
+  street    String      @db.VarChar(250)
+  number    Int
+  city_id   Int
+  cities    cities      @relation(fields: [city_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trainings trainings[]
+}
+
+model states {
+  id     Int      @id @default(autoincrement())
+  name   String   @db.VarChar(250)
+  uf     String   @unique @db.VarChar(2)
+  cities cities[]
+}
+
+model training_types {
+  id                    Int         @id @default(autoincrement())
+  trained_muscle_groups String[]
+  exercises             String[]
+  trainings             trainings[]
+}
+
+model trainings {
+  id                    Int            @id @default(autoincrement())
+  type_id               Int
+  did_all_the_exercises Boolean?
+  gym_name              String         @db.VarChar(50)
+  start_timestamp       DateTime       @default(now()) @db.Timestamp(6)
+  end_timestamp         DateTime?      @db.Timestamp(6)
+  gyms                  gyms           @relation(fields: [gym_name], references: [name], onDelete: NoAction, onUpdate: NoAction)
+  training_types        training_types @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
